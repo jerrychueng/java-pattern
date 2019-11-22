@@ -1,3 +1,117 @@
+#设计模式的基本原则（设置对应的功能模块，框架设置中会使用到对应的设计模式，对应的是一种规范操作。已达到对应的代码的重用性，解耦操作。）
+1.对应的..
+
+#设计模式对应的设计原则（）
+1.单一职责原则（Simple Responsibility Principle）
+对应的类的责任是单一性的，设计之初对应的不能把多个功能的操作耦合在一起，后面维护和添加新功能时，会出现功能性耦合操作。
+将对应的类粒度化，在设计时把对应的功能拆分成对应的单独功能类操作。（在特殊情况下，如果当前的类的功能性比较简单和操行性较少，可以从下的方面出发，从函数的方面的来分化对应的职责单一性，也确保对应的单一性操作，必须保证特定的条件下来确认对应使用对应的函数单一性原则）；
+提高类的可读性，提高系统的可维护性；
+可以降低类的复杂度，
+>> 实例： 
+//交通工具
+public class Vehicle{
+   public void run(String way){
+      //如果单一完成对应的功能则，当需要新的方式时，则对应的不符合对应的要求。所有需要新，客户端得不到自己的要求结果。
+      System.out.println(way +"run... road"); //在功能性上讲对应的way不能使用所有的方式来确认交通工具用法，
+                                              //如果在对应的方法中添加逻辑处理，当添加的新的方式需求时，则对应的函数也需要做对应的修改处理，
+                                              //甚至将对应的函数名称接口改变等，这样对客户端要重新改变对应的接口才能完成对应的功能。这样的方式 
+                                              //对客户端是不允许的。
+       if（bus）{
+         //todo bus bussniss...  Q1: 添加多种方式操作性，扩充了对应的耦合性，甚至后期会修改新的需求而修改对应的函数。
+       }else if(air){
+         // todo air bussniss...
+       }else if(car){
+         //....
+       }...
+       //Q2: 如果添加新的需求，将对应的做限制操作，则需要修改对应已经实现过得功能，而添加新的业务逻辑
+       else if(boat){
+         //...TODO
+         //new
+         if(time >10 && time<15){
+           //TODO new operation...
+         }
+       }
+   }
+}
+
+public class Test{
+   public static void main(String [] args){
+       Vehicle vehicle = new Vehicle();
+       vehicle.run(air);
+       vehicle.run(boat);
+       //Q3. 如果对应的没有rocket的接口处理操作，则对应的客户端使用的方式会出现得不到对应的结果.返回来需要重新设置对应的类接口的操作，添加新的业务。
+       vehicle.run(rocket);
+       .....
+   }
+}
+
+
+//重新设计的方式
+public class AirVehicle{
+    public void run(String run){
+      //todo ...
+    }
+}
+
+public class BusVehicle{
+   public void run(String run){
+     //TODO....
+   }
+}
+
+public class CarVehicle{
+   public void run(String run){
+     //todo...
+   }
+}
+//A:扩展性如果对应有新的方式了，不用在以前的类上做修改操作， 
+...
+
+public class Test{
+    public static void main(String [] args){
+         //指定特定的功能类来完成对应的业务，如果有新的，不用在原来的基础上做的对应的业务修改。
+         AirVehicle airVehicle = new AirVehicle();
+         airVehicle.run(air);
+         CarVehicle carVehicle = new CarVehicle();
+         carVehicle.run(car);
+         //...如有新的方式可以完成对应
+    }
+}
+//添加新的方式不用做其他修改来完成
+public class BoatVehicle{
+    public void run(String boat){
+      //TODO...
+    }
+}
+
+==> BoatVehicle boatVehicle = new BoatVehicle();
+    boatVehicle.run(boat);
+    
+    
+扩展说明，如果对应的类中的函数也需要有单一职责操作，不能做过多的业务功能，可将对应的拆分，这样便于可读性和维护操作。
+
+public class NewVehicle{
+    //该函数根据对应的函数名，来确认对应的功能，如果要需要新的业务功能操作，值需要添加对应的函数功能来扩展，或者外部类扩展的方式来完成对应的功能。
+    public void run(String newVehicle){
+       //TODO...
+       //A:新的功能，限制对应的时间操作,调用对应的新的处理功能即可
+       checkVehicle(newVehicle);
+       limitTime(newVehicle);//...完成新功能。不影响对应的原来的调用接口完成对应的功能。
+    }
+    
+    public void checkVehicle(String newVehicel){
+      //check the vehicle .... 
+    }
+   
+    public void limitTime(String newVehicle){
+       if(time >10 && time<20){
+         //....
+       }
+       ///....
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------
+
 #java的设计模式大体上分为三大类：
 
  1.   创建型模式（5种）：工厂方法模式，抽象工厂模式，单例模式，建造者模式，原型模式。
