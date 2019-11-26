@@ -112,7 +112,256 @@ public class NewVehicle{
 }
 ------------------------------------------------------------------------------------------------------------------------------
 2.接口隔离原则（interface  Segregation Principle）
-依据是面向接口编程，而是面向对应的实现类来完成对应的功能，如果需要扩充对应的，需要新填对应的功能，或则实现方式。所以前提面向接口和抽象编程。对于接口和抽象，我们需要将对应的接口最小化关系业务，接口功能单一化，确认性，不能讲重复的功能添加到一个接口中，而对应的接口不会产生业务功能冲突。
+依据是面向接口编程，而是面向对应的实现类来完成对应的功能，如果需要扩充对应的，需要新填对应的功能，或则实现方式。所以前提面向接口和抽象编程。对于接口和抽象，我们需要将对应的接口最小化关系业务，接口功能单一化，确认性，不能讲重复的功能添加到一个接口中，而对应的接口不会产生业务功能冲突。(一个类对另外一个类的依赖性应当是建立在最小的接口上的。)
+>>降低耦合关系，是类直接的职责更加明确。
+实例：
+//一个接口提供多个操作方式
+public interface Interface{
+   void operation1();
+   void operation2();
+   void operation3();
+   void operation4();
+   void operation5();
+}
+
+public class A implements Interface{
+   public void operation1(){
+      //TODO...
+   }
+   
+   public void operation2(){
+      //TODO...
+   }
+   public void operation3(){
+      //TODO...
+   }
+   
+   public void operation4(){
+      //TODO...
+   }
+   
+   public void operation5(){
+      //TODO...
+   }
+}
+//具体的实现类来实现对应的有多种功能的接口操作
+public class B implements Interface{
+  public void operation1(){
+      //TODO...
+   }
+   
+   public void operation2(){
+      //TODO...
+   }
+   public void operation3(){
+      //TODO...
+   }
+   
+   public void operation4(){
+      //TODO...
+   }
+   
+   public void operation5(){
+      //TODO...
+   }
+
+}
+
+public class C{
+   public void doOperation1(Interface a){
+      //todo...
+      a.opeartion1();
+      //...
+   }
+   public void doOpeartion3(Interface a){
+      //todo....
+      a.operation3();
+   }
+}
+
+//有对应的类依赖接口时，对应但是对应的实现类完成了所有的功能，已经对应的接口只有部分执行调用接口的方式。而对应的产生具体实现类的依赖的接口有明确的职责关系来完成对应的，需要将对应的接口隔离开来。是调用的方式更加明确。
+public class D{
+    public void doOperation2(Interface a){
+      //todo...
+      a.operation2();
+    }
+    
+    public void doOperation4(Interface a){
+      //TODO...
+      a.operation4();
+    }
+}
+
+public interface Interface1{
+   void operation1();
+   void operation3();
+}
+
+public interface Interface2{
+   void operation2();
+   void operation4();
+}
+//使接口功能职责分隔开来，而不是而合并在一起时对应的耦合性增强。
+public interface Interface3{
+   void operation5();
+}
+
+public class A implements Interface1 ,Interface3{
+   public void operation1(){
+      //TODO...
+   }
+   
+   public void operation3(){
+      //TODO...
+   }
+   
+   public void operation5(){
+      //TODO...
+   }
+}
+
+public class B implements Interface2,Interface5{
+    public void operation2(){
+      //TODO...
+    }
+      
+    public void operation4(){
+      //TODO...
+    }
+    
+    public void operation5(){
+      //TODO...
+    }
+}
+
+public class C {
+
+   public void doOperation1(Interface1 a){
+      //todo...
+      a.operation1();
+   }
+   
+   public void doOperation3(Interface1 a){
+      //TODO...
+      a.operation3();
+   }
+  
+}
+
+public class D{
+   public void doOperation2(Interface2 a){
+      //TODO...
+      a.operation2();
+   }
+   
+   public void doOperation4(Interface4 a){
+      //TODO...
+      a.operation4();
+   }
+}
+
+public class Test{
+   public static void main(String [] args){
+         D d = new D();
+         d.operation2(new B()); 
+         //...
+   }
+}
+客户端不要使用它不需要的接口,设计之初应该保证类不被对应的接口的污染，这个接口类对应的抽象定义太复制，抽象定义的功能在耦合，后期在依赖对应的接口时或关联关系时，就会有过多的不必要的抽象做对应的实现。
+------------------------------------------------------------------------------------------------------------------------------
+3.依赖倒置原则：（dependence inversion principle）
+依赖倒置原则的核心就是面向抽象(抽象类或者接口)编程, 在对应的类与类之间的关系，有之一种依赖关系，而在对应的处理这中关系时，我们应该保证面对抽象，而不依赖具体编程的方式，这个保证在后面客户端（上层调用）时有对应的新功能或则方式时，则需要从结构到调用的方式可能都发生修改，而增加了开发的时间以及可维护性差。 从抽象的本质来切入，抽象是对实现的约束，是对依赖者的一种契约，不仅仅约束自己，同时约束自己与外部的关系，保证了抽象知己和具体外部的依赖的关系。
+抽象不应该依赖细节
+细节应该依赖抽象
+实例
+public class Driver{
+   public void run(Benz b){
+      b.driver();
+      //TODO...
+   }
+}
+public class Benz{
+   public void drive{
+      //todo...
+   }
+}
+public class Client{
+   
+   public static void main(String [] args){
+      Driver driver = new Driver();
+      Benz b = new Benz();
+      driver.run(b);// 当前这个客户端使用的方式比较固定，对细节实现，而不便于扩展，
+   }
+
+}
+
+public class BWM{
+   public void drive{
+      //todo...
+   }
+}
+
+对是细节依赖，没有对应的抽象性
+public class BWNDriver {
+   //
+   public void run(BWM bmw){
+      bmw.drive(); //...只能被动的扩展对应的如果是底层架构，则需要实现新的方式来提供给客户端来完成对应的功能，如果一个接口的比较多，则可能需要更复杂的实现方式，或则架构重构的方式了。
+   }
+}
+
+
+
+public interface IDriver{
+   public void run(ICar car);
+}
+
+public interface ICar{
+   public void drive();
+}
+
+//方式1.
+public class Benz implements ICar{
+   public void drive(){
+      //todo benz drive....
+   } 
+}
+
+public class Driver implements IDriver {
+
+   public void run(ICar car){
+      //driver todo something
+      car.drive();///...
+   }
+}
+
+
+public class Client {
+
+   public static void main(String [] args){
+      Driver driver = new Driver();
+      Benz benz = new Benz();
+      
+      driver.run(benz);
+      
+      BMW bmw = new BMW();
+      driver.run(bmw);//直接扩展对应的新的实现方式，而不需要构建新的抽象方式来完成对应的功能。
+      
+   }
+}
+
+public class BMW  implements ICar{
+   public void drive(){
+      //todo ...
+   }
+}
+
+也可以扩展新的
+public class NewDriver implements IDriver{
+   public void run(ICar car){
+      //新的实现方式...
+   }
+}
+
 
 
 #java的设计模式大体上分为三大类：
