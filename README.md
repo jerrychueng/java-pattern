@@ -362,6 +362,60 @@ public class NewDriver implements IDriver{
    }
 }
 
+------------------------------------------------------------------------------------------------------------------------------
+4.里式替换原则（Liskov Substitution Principle）
+继承的优点：（定义了一个基本的规范，而且提供了给对应的继承者，可也用于扩展性）
+● 代码共享，减少创建类的工作量，每个子类都拥有父类的方法和属性；
+● 提高代码的重用性；
+● 子类可以形似父类，但又异于父类；
+● 提高代码的可扩展性，很多开源框架的扩展接口都是通过继承父类来完成的；
+● 提高产品或项目的开放性。
+
+继承的缺点：（被动性增强，主动拥有对应父类的特性，如依赖父类功能时，可能带来一定的耦合性）
+● 继承是侵入性的。只要继承，就必须拥有父类的所有属性和方法；
+● 降低代码的灵活性。子类必须拥有父类的属性和方法；
+● 增强了耦合性。当父类的常量、变量和方法被修改时，需要考虑子类的修改，而且在缺乏规范的环境下，这种修改可能带来非常糟糕的结果—— 大段的代码需要重构。
+
+>>在子类尽量不重写父类的方法，如没有特殊的定义中。继承实际上让两个类耦合性增强，在适当的情况下，可通过聚合，组合，依赖的关系完成。
+
+实例：
+public class Parent{
+    public int operation(int a,int b){
+         return a+b;
+    }
+}
+
+public class Child extends Parent{
+      public void newOperation(){
+         //todo...
+      }
+      //重写了对应的父类的函数，重新定制了对应的操作，当来一定的耦合性
+      public int operation(int a, int b){
+         //TODO
+         return a-b;
+      }
+}
+
+public class Client{
+   public static void main(String [] args){
+        Child child = new Child();
+        child.operation(1,2);//如果没有特定的调用方式，想使用父类的方式来完成，但是对应的子类重写对应的功能模块，则对应会有不同的实现方式来得到结果。 所有对应的继承带来了耦合性。
+   }
+}
+
+
+public class Child {
+   private Parent parent = new Parent();//使用组合的方式来完成
+   
+   public void newOperation(){
+      //todo...
+   }
+   public int operation(int a, int b){
+      return parent.operation(a,b);//直接使用对应组合的对象来完成功能。
+   }
+}
+
+
 
 
 #java的设计模式大体上分为三大类：
