@@ -416,6 +416,118 @@ public class Child {
 }
 
 
+------------------------------------------------------------------------------------------------------------------------------
+5.开闭原则（open close principle）
+>对扩展开发，对修改关闭
+
+实例：
+public class GraphicEditor{
+   
+   public void drawShape(Shape shape){
+      if(shape.type == 1){
+         drawRectangle(shape);
+      }else if(shape.type ==2){
+         drawCircle(shape);
+      }
+   }
+   
+   public void drawRectangle(Shape shape){
+      //Todo...
+   }
+   
+   public void drawCircle(Shape shape){
+      //TODO
+   }
+}
+
+public class Shape{
+  private int type;
+  public Shape(int type){
+   this.type = type;
+  }
+}
+
+public class Rectangle extends Shape{
+   public Rectangle(int type){
+      super(type);
+   }
+}
+
+public class Circle extends Shape{
+   public Circle(int type){
+      super(type);
+   }
+}
+
+//如果对应的当前是扩展一个需要对修改需要重新定义
+
+public class Triangle extends Shape{
+   public Triangle(int type){
+      super(type);
+   }
+}
+//对应的需要将
+ public void drawShape(Shape  shape){
+   if....
+   else (shape.type == 3){
+      drawTriangle(shape);
+   }
+ }
+ 
+ public void drawTriangle(Shape shape){
+   //TODO....需要正价修改
+ }
+
+
+
+//重新定义
+public class GraphicEditor{
+   public void drawShape(Shape shape){
+      shape.draw();
+   }
+}
+
+
+public abstract class Shape{
+   public void draw();
+}
+
+public class Rectangle extends Shape{
+   public void draw(){
+      //TODO...
+   }
+}
+
+public class Circle extends Shape{
+   public void draw(){
+      //TODO...
+   }
+}
+
+public class Triangle extends Shape{
+
+   public void draw(){
+      //...
+   }
+}
+
+
+pulibc class Test{
+   public static void main(String [] args){
+      GraphicEditor graphicEditor = new GraphicEditor();
+      
+      graphicEditor.draw(new Triangle());
+      graphicEditor.draw(new Circle());
+      graphicEditor.draw(new Rectangle());
+      
+   }
+}
+------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 #java的设计模式大体上分为三大类：
